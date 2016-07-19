@@ -23,7 +23,7 @@
 <% d+=1 %>
 <% end %>
 
-<h3>Genres</h3>
+<h3>Genres:</h3>
 <% d = 1 %>
 <% @user.genres.order(:name).each do |g| %>
 <h4><%= d.to_s %>. <a href='/actors/<%= g.slug %>'> <%= g.name %> </a></h4>

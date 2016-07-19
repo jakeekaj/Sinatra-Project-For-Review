@@ -21,7 +21,8 @@
 
 <% y = 1 %>
 <% @movies.order(:title).each do |x| %>
-<h4><%= y.to_s  %>. <a href="/movies/<%= x.slug %>"> <%= x.title %></a> (<%= x.year %>) <em>Added by:<a href="/users/<%= x.user.username %>"><%= x.user.username %></a></em></h4>
+<h4><%= y.to_s  %>. <a href="/movies/<%= x.slug %>"> <%= x.title %></a> (<%= x.year %>) <em>
+  Added by:<a href="/users/<%= x.user.username %>"><%= x.user.username %></a></em></h4>
  <% y+=1 %>
 <% end %>
 

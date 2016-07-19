@@ -32,6 +32,10 @@
 <% d+=1 %>
 <% end %>
 
+
+Added by:<a href="/users/<%= @movie.user.username %>"><%= @movie.user.username %></a></em>
+
+
 <form action="/movies/<%=@movie.slug%>/delete" method="post" id="form1">
         <input id="hidden" type="hidden" name="_method" value="DELETE">
     </form>
