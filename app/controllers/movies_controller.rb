@@ -1,10 +1,14 @@
 class MoviesController < ApplicationController
 
-
-  get '/movies' do
+  before do
     if !logged_in?
       redirect "/login"
-    else
+    end
+  end
+
+
+  get '/movies' do
+
     @title = "Movie List - JMDB"  
     @movies = Movie.all
     @notice = session[:notice]
@@ -12,21 +16,19 @@ class MoviesController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'movies/index'
-   end
+   
   end
 
 
   get '/movies/new' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @title = "Add a new movie - JMDB"   
     @notice = session[:notice]
     session[:notice] = nil
     @error = session[:error]
     session[:error] = nil
     erb :'movies/new'
-    end
+    
   end
 
   post '/movies' do
@@ -75,9 +77,7 @@ class MoviesController < ApplicationController
 
 
   get '/movies/:slug' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @movie = Movie.find_by_slug(params[:slug])
     if @movie == nil
       session[:error] = "Movie does not exist"
@@ -89,13 +89,11 @@ class MoviesController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'movies/show'
-    end
+    
   end
 
   get '/movies/:slug/edit' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @error = session[:error]
     session[:error] = nil
     @movie = Movie.find_by_slug(params[:slug])
@@ -110,7 +108,7 @@ class MoviesController < ApplicationController
         session[:error] = "You are not authorized to edit this movie."
         redirect '/movies/' + @movie.slug
       end
-      end
+      
     end
   end
 

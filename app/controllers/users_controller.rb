@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+  
   #display all users
   get '/users' do
     if !logged_in?

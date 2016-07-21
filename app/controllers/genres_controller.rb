@@ -1,10 +1,13 @@
 class GenresController < ApplicationController
 
-
-  get '/genres' do
+  before do
     if !logged_in?
       redirect "/login"
-    else
+    end
+  end
+
+  get '/genres' do
+
     @title = "Genre List - JMDB"  
     @genres = Genre.all
     @notice = session[:notice]
@@ -12,21 +15,19 @@ class GenresController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'genres/index'
-   end
+   
   end
 
 
   get '/genres/new' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @title = "Add a new genre - JMDB"   
     @notice = session[:notice]
     session[:notice] = nil
     @error = session[:error]
     session[:error] = nil
     erb :'genres/new'
-    end
+    
   end
 
   post '/genres' do
@@ -95,9 +96,7 @@ class GenresController < ApplicationController
 
 
   get '/genres/:slug' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @genre = Genre.find_by_slug(params[:slug])
     if @genre == nil
       session[:error] = "Genre does not exist"
@@ -109,13 +108,11 @@ class GenresController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'genres/show'
-    end
+    
   end
 
   get '/genres/:slug/edit' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @error = session[:error]
     session[:error] = nil
     @genre = Genre.find_by_slug(params[:slug])
@@ -130,7 +127,7 @@ class GenresController < ApplicationController
         session[:error] = "You are not authorized to edit this genre."
         redirect '/genres/' + @genre.slug
       end
-      end
+      
     end
   end
 

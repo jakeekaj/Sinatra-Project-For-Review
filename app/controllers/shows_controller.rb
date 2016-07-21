@@ -1,10 +1,13 @@
 class ShowsController < ApplicationController
 
-
-  get '/shows' do
+  before do
     if !logged_in?
       redirect "/login"
-    else
+    end
+  end
+
+  get '/shows' do
+
     @title = "Show List - JMDB"  
     @shows = Show.all
     @notice = session[:notice]
@@ -12,21 +15,19 @@ class ShowsController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'shows/index'
-   end
+   
   end
 
 
   get '/shows/new' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @title = "Add a new show - JMDB"   
     @notice = session[:notice]
     session[:notice] = nil
     @error = session[:error]
     session[:error] = nil
     erb :'shows/new'
-    end
+    
   end
 
   post '/shows' do
@@ -75,9 +76,7 @@ class ShowsController < ApplicationController
 
 
   get '/shows/:slug' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @show = Show.find_by_slug(params[:slug])
     if @show == nil
       session[:error] = "Show does not exist"
@@ -89,13 +88,11 @@ class ShowsController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'shows/show'
-    end
+    
   end
 
   get '/shows/:slug/edit' do
-    if !logged_in?
-      redirect "/login"
-    else
+
     @error = session[:error]
     session[:error] = nil
     @show = Show.find_by_slug(params[:slug])
@@ -110,7 +107,7 @@ class ShowsController < ApplicationController
         session[:error] = "You are not authorized to edit this show."
         redirect '/shows/' + @show.slug
       end
-      end
+      
     end
   end
 

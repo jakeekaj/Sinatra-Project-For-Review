@@ -1,10 +1,13 @@
 class ActorsController < ApplicationController
 
-  #show all actors
-  get '/actors' do
+  before do
     if !logged_in?
       redirect "/login"
-    else
+    end
+  end
+
+  #show all actors
+  get '/actors' do
     @title = "Actor List - JMDB"  
     @actors = Actor.all
     @notice = session[:notice]
@@ -12,21 +15,16 @@ class ActorsController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'actors/index'
-   end
   end
 
   #enter new actor
   get '/actors/new' do
-    if !logged_in?
-      redirect "/login"
-    else
     @title = "Add a new actor - JMDB"   
     @notice = session[:notice]
     session[:notice] = nil
     @error = session[:error]
     session[:error] = nil
     erb :'actors/new'
-    end
   end
 
   post '/actors' do
@@ -95,9 +93,6 @@ class ActorsController < ApplicationController
 
   #show page for individual actor
   get '/actors/:slug' do
-    if !logged_in?
-      redirect "/login"
-    else
     @actor = Actor.find_by_slug(params[:slug])
     if @actor == nil
       session[:error] = "Actor does not exist"
@@ -109,14 +104,10 @@ class ActorsController < ApplicationController
     @error = session[:error]
     session[:error] = nil
     erb :'actors/show'
-    end
   end
 
   #edit page for individual actor
   get '/actors/:slug/edit' do
-    if !logged_in?
-      redirect "/login"
-    else
     @error = session[:error]
     session[:error] = nil
     @actor = Actor.find_by_slug(params[:slug])
@@ -130,7 +121,6 @@ class ActorsController < ApplicationController
         else
         session[:error] = "You are not authorized to edit this actor."
         redirect '/actors/' + @actor.slug
-      end
       end
     end
   end
